@@ -1,16 +1,16 @@
 /**
  * Copyright (c) <2016> <hasder>
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 	
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- * 
+ *
 */
 
 
@@ -29,15 +29,15 @@ config.listen = {};
 config.translator = {};
 
 //config.serviceregistry.ip		= "[FDFD::FF]";
-config.serviceregistry.ip		= "127.0.0.1";
+config.serviceregistry.ip		= "192.168.0.103";
 config.serviceregistry.port		= "1100";
 
 //config.listen.ip				= "[FDFD:55::80FE]";
-config.listen.ip				= "127.0.0.1";
+config.listen.ip				= "192.168.0.103";
 config.listen.port				= "1102";
 
 //config.translator.ip			= "[FDFD::FF]";
-config.translator.ip			= "127.0.0.1";
+config.translator.ip			= "192.168.0.103";
 config.translator.port			= "8000";
 
 module.exports = config;

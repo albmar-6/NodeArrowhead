@@ -5,106 +5,32 @@ var taffy = require('taffydb').taffy;
 
 
 
-function servicerecord ( name, type, host, port, domain, properties, timestampInSeconds )  {
+function servicerecord (name, type, host, port, timestampInSeconds)  {
 	this.name = name;
 	this.type = type;
 	this.host = host;
 	this.port = port;
-	this.domain = domain;
-	this.properties = properties;
 	this._timestamp = timestampInSeconds;
 }
 
 
 var inJSON = [
 				new servicerecord(
-					"palletAvailable-827635ef",
-					"palletAvailable._coap-json._udp",
-					"[fdfd::ff]", "5683",
-					"unknown",
-					{
-						"property":[
-							{
-								"name":"version",
-								"value":"1.0"
-							},
-							{
-								"name":"path",
-								"value":"/palletAvailable",
-								"loc":"Station-01"
-							}
-						]
-					},
+					"getTemp-01",
+					"HTTP",
+					"192.169.0.103",
+					 "5683",
 					Math.floor(new Date().getTime() / 1000)
 				),
 				new servicerecord(
-					"processingComplete-827635ef",
-					"processingComplete._coap-json._udp",
-					"[fdfd::ff]", "5683",
-					"unknown",
-					{
-						"property":[
-							{
-								"name":"version",
-								"value":"1.0"
-							},
-							{
-								"name":"path",
-								"value":"/processingComplete",
-								"loc":"Station-01"
-							}
-						]
-					},
+					"setTemp-01",
+					"HTTP",
+					"192.169.0.103",
+					 "5684",
 					Math.floor(new Date().getTime() / 1000)
-				),
-				new servicerecord(
-				    "conveyorOperation-sim01",
-				    "conveyorOperation._coap._udp",
-				    "[fdfd::a12f:783e:3b79:3630]",
-				    "5683",
-				    "unknown",
-				    {
-				      "property": [
-				        {
-				          "name": "path",
-				          "value": "/conveyorOperation"
-				        },
-				        {
-				          "name": "version",
-				          "value": "1.0"
-				        }
-				      ]
-				    },
-					Math.floor(new Date().getTime() / 1000)				  
-				),
-				new servicerecord(
-					    "conveyorOperation-sim02",
-					    "conveyorOperation._coap._udp",
-					    "[fdfd::a12f:783e:3b79:3630]",
-					    "5683",
-					    "unknown",
-					    {
-					      "property": [
-					        {
-					          "name": "path",
-					          "value": "/conveyorOperation"
-					        },
-					        {
-					          "name": "version",
-					          "value": "1.0"
-					        }
-					      ]
-					    },
-						Math.floor(new Date().getTime() / 1000)				  
-					)
-          ];
-
+				)
+          ]; 
 var db = new taffy(inJSON);
-
-
-
-
-
 
 var serviceWatchdog = setInterval(function () {
 	var timenow = Math.floor(new Date().getTime() / 1000);
@@ -118,7 +44,11 @@ var serviceWatchdog = setInterval(function () {
 
 
 
-
+function getProvider(name) {
+	if(name){
+		return db.filter()
+	}
+}
 
 
 
@@ -133,6 +63,11 @@ function getServiceResponse(name) {
 		return db().get();
 	}
 }
+
+exports.getProvider = function(name){
+		return db().filter({name:{like:name}}).get();
+}
+
 exports.service = function(req, res){
 	res.setHeader('Content-Type','application/json');
 	var responsePayload = getServiceResponse(req.params.name);
@@ -179,20 +114,17 @@ exports.type_coap = function(req, res){
 var registerNewService = function (element) {
 	if(element.name) {
 		db({name:element.name}).remove();
-		
+
 		db.insert(new servicerecord(
-				element.name, 
-				element.type, 
-				element.host, 
-				element.port, 
-				element.domain,
-				element.properties,
+				element.name,
+				element.host,
+				element.port,
 				Math.floor(new Date().getTime() / 1000)));
-		
+
 
 	} else {
 		throw new Error("service name not provided");
-	
+
 	}
 };
 /*
@@ -202,14 +134,14 @@ exports.publish = function(req, res){
 	try {
 		registerNewService(req.body);
 
-		res.send("ok");
-		
+		res.send("HTTP request published!");
+
 	} catch (error) {
 		console.log('exception when parsing body = ' + error);
 		res.code = '4.00';
 		res.end();
 	}
-	
+
 };
 exports.publish_mqtt = function(message){
 	try {
@@ -226,17 +158,17 @@ exports.publish_coap = function(req, res){
 		var payload = JSON.parse(req.payload);
 		//payload.forEach(registerNewService);
 		registerNewService(payload);
-		
+
 //		if(payload.name) {
 //			db({name:payload.name}).remove();
-//			
+//
 //			db.insert(new servicerecord(
-//						payload.name, 
-//						payload.type, 
-//						payload.host, 
-//						payload.port, 
+//						payload.name,
+//						payload.type,
+//						payload.host,
+//						payload.port,
 //						payload.properties ));
-//			
+//
 //			res.end("ok");
 //		} else throw new Error("service name not provided");
 	} catch (e) {

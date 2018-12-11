@@ -1,16 +1,17 @@
+
 /**
  * Copyright (c) <2016> <hasder>
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 	
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -18,7 +19,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- * 
+ *
 */
 
 /**
@@ -36,6 +37,8 @@ var express = require('express')
 
 var app = express();
 
+
+
 // all environments
 app.set('port', process.env.PORT || config.listen.http.port); //1100
 app.set('views', __dirname + '/views');
@@ -45,6 +48,11 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 
+/*
+app.post('/', function (req, res) {
+  res.send('POST request to the homepage')
+})
+*/
 app.use(function(req, res, next) {
 	  res.header("Access-Control-Allow-Origin", "*");
 	  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -74,7 +82,8 @@ http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-
+//-------------------------------MQTT------------------------------------------
+/*
 var settings = {
 	    clientId: "laptop-A8076",
 	    keepalive: 1,
@@ -82,8 +91,9 @@ var settings = {
 	    reconnectPeriod: 1000 * 1
 	};
 
-var client = mqtt.connect('mqtt://192.168.0.111', settings);
+//var client = mqtt.connect('mqtt://192.168.0.111', settings);
 //var client = mqtt.connect('mqtt://127.0.0.1');
+
 
 client.on('connect', function () {
 	client.subscribe('$ah/registry/service');
@@ -106,7 +116,8 @@ client.on('close', function () {
 	console.log("connection closed");
 });
 
-var server = coap.createServer();
+
+//var server = coap.createServer();
 //server.on('get', function(req, res) {
 //	if(req.url.split('/')[1] === "servicedirectory") {
 //		if (req.url.split('/')[2] 			=== "service") {
@@ -121,9 +132,13 @@ var server = coap.createServer();
 //	}
 //});
 
+*/
+
+//----------------------------COAP---------------------------------------------
+/*
 server.on('request', function(req, res) {
 	console.log('received request req:' + req.method + " payload     " + req.payload);
-	
+
 	var usage_err = null;
 	var urlsegments = req.url.split('/');
 	if(urlsegments[1] === "servicediscovery") {
@@ -149,7 +164,7 @@ server.on('request', function(req, res) {
 	}  else {
 		usage_err = true;
 	}
-	
+
 	if(usage_err) {
 		res.end('wrong usage');
 	}
@@ -159,3 +174,7 @@ server.on('request', function(req, res) {
 server.listen(config.listen.coap.port, config.listen.coap.ip, function() {
   console.log('server started ' + server._port);
 });
+*/
+
+//--------------------------------HTTP-----------------------------------------
+console.log(serviceregistry.getProvider("getTemp-01"));

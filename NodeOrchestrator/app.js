@@ -1,16 +1,16 @@
 /**
  * Copyright (c) <2016> <hasder>
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 	
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- * 
+ *
 */
 
 /**
@@ -70,22 +70,12 @@ request({
 		json: //[{
 				{
 				  "name" : "OrchestrationStore",
-				  "type" : "_orchestrationstore._json._http._tcp",
 				  "port" : config.listen.port,
 				  "host" : config.listen.ip,
-				  "properties" : { "property" : [ { "name":"version", "value":"1.0" },
-				                                  { "name":"path", "value":"/orchestrationstore/configuration/" } ] }
-			}
-			//{
-			//	  "name" : "OrchestrationEngine",
-//	  "type" : "_orchestrationengine-_json-_http._tcp",
-//			  "port" : config.listen.port,
-//			  "host" : config.listen.ip,
-//			  "properties" : { "property" : [ { "name":"version", "value":"1.0" },
-//			                                  { "name":"path", "value":"/orchestrationengine/" } ] }
-//		}]
+        }
+
 	}, function(error, response, body) {
-		console.log(body);
+    //console.log(body);
 	});
 
 //---------------------------------------------------------------------------
@@ -96,6 +86,7 @@ app.post('/orchestrationstore/configuration/delete', orchestrationstore.deleteEx
 
 
 //orchestrationengine service
+/*
 var request2 = require("request");
 request2({
 		uri: "http://" + config.serviceregistry.ip + ":" + config.serviceregistry.port + "/servicediscovery/publish",
@@ -111,11 +102,14 @@ request2({
 	}, function(error, response, body) {
 		console.log(body);
 	});
+*/
 
 //---------------------------------------------------------------------------
 //app.get('/orchestrationengine/*', orchestrationengine.lookupOrchestrationStore, orchestrationengine.lookupServiceRegistry, orchestrationengine.matchServiceContract, orchestrationengine.sendResponse);
 app.get('/orchestrationengine/:target', orchestrationengine.handleGet);
 
+
+//------------------------HTTP--------------------------------------------------
 
 
 http.createServer(app).listen(app.get('port'), function(){
@@ -123,12 +117,18 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 
+
+
+//---------------------------COAP----------------------------------------------
+
+
+/*
 var server = coap.createServer();
 
 
 server.on('request', function(req, res) {
 	console.log('received request req:' + req.method + " payload     " + req.payload);
-	
+
 	var usage_err = null;
 	var urlsegments = req.url.split('/');
 	if(urlsegments[1] === "orchestrationengine") {
@@ -146,7 +146,7 @@ server.on('request', function(req, res) {
 	} else {
 		usage_err = true;
 	}
-	
+
 	if(usage_err) {
 		res.end('wrong usage');
 	}
@@ -156,6 +156,4 @@ server.on('request', function(req, res) {
 server.listen(9684, "127.0.0.1", function() {
   console.log('server started ' + server._port);
 });
-
-
-
+*/
