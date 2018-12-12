@@ -1,6 +1,6 @@
 
 var taffy = require('taffydb').taffy;
-//var localStorage = require('localStorage');
+
 
 
 
@@ -29,7 +29,7 @@ var inJSON = [
 					 "5684",
 					Math.floor(new Date().getTime() / 1000)
 				)
-          ]; 
+          ];
 var db = new taffy(inJSON);
 
 var serviceWatchdog = setInterval(function () {
