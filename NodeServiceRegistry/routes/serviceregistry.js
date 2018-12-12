@@ -1,10 +1,6 @@
 
 var taffy = require('taffydb').taffy;
 
-
-
-
-
 function servicerecord (name, type, host, port, timestampInSeconds)  {
 	this.name = name;
 	this.type = type;
